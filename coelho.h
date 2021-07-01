@@ -37,6 +37,12 @@ void eliminarCoelho(Coelho *coelhos, int *tamanho, int *pos)
 
 void verificarCoelhos(Coelho *coelhos, int *tamanho, int lin, int col, int matriz[][col])
 {
+
+    for (int i = 0; i < *tamanho; i++)
+    {
+        matriz[coelhos[i].pos.lin][coelhos[i].pos.col] = COELHO_COD;
+    }
+
     for (int i = 0; i < *tamanho - 1; i++)
     {
         for (int j = i + 1; j < *tamanho; j++)
@@ -56,12 +62,12 @@ void verificarCoelhos(Coelho *coelhos, int *tamanho, int lin, int col, int matri
     }
 }
 
-void moverCoelhos(Coelho *coelhos, int *tamanho, int lin, int col, int matriz[][col])
+void moverCoelhos(Coelho *coelhos, int *tamanho, int lin, int col, int matriz[][col], int ger_proc_coelhos)
 {
+    int n_tamanho = *tamanho;
 
-    for (int i = 0; i < *tamanho; i++)
+    for (int i = 0; i < n_tamanho; i++)
     {
-
         int n_vazias = 0;
         int vazias[4];
 
@@ -93,7 +99,7 @@ void moverCoelhos(Coelho *coelhos, int *tamanho, int lin, int col, int matriz[][
         while (!coelhoContains(vazias, n_vazias, pos))
             pos = (pos + 1) % n_vazias;
 
-        if (coelhos[i].ger == GER_PROC_COELHO_COD)
+        if (coelhos[i].ger == ger_proc_coelhos)
         {
             coelhos[*tamanho] = criarCoelho(coelhos[i].pos.lin, coelhos[i].pos.col);
             *tamanho = *tamanho + 1;

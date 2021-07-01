@@ -38,8 +38,22 @@ void eliminarRaposa(Raposa *raposas, int *tamanho, int *pos)
     *pos = *pos - 1;
 }
 
-void verificarRaposas(Raposa *raposas, int *nova_pos, int *tamanho, int lin, int col, int matriz[][col])
+void verificarRaposas(Raposa *raposas, int *nova_pos, int *tamanho, int lin, int col, int matriz[][col], int ger_alim_raposas)
 {
+    for (int i = 0; i < *tamanho; i++)
+    {
+        if (raposas[i].fome > ger_alim_raposas)
+        {
+            matriz[raposas[i].pos.lin][raposas[i].pos.col] = VAZIO_COD;
+            eliminarRaposa(raposas, tamanho, &i);
+            break;
+        }
+    }
+
+    for (int i = 0; i < *tamanho; i++)
+    {
+        matriz[raposas[i].pos.lin][raposas[i].pos.col] = RAPOSA_COD;
+    }
 
     for (int i = 0; i < *tamanho - 1; i++)
     {
@@ -85,20 +99,12 @@ void verificarRaposas(Raposa *raposas, int *nova_pos, int *tamanho, int lin, int
     }
 }
 
-void moverRaposas(Raposa *raposas, int *tamanho, int lin, int col, int matriz[][col])
+void moverRaposas(Raposa *raposas, int *tamanho, int lin, int col, int matriz[][col], int ger_proc_raposas, int ger_alim_raposas)
 {
     int n_tamanho = *tamanho;
     int nova_pos[n_tamanho];
     for (int i = 0; i < n_tamanho; i++)
     {
-        if (raposas[i].fome == GER_ALIM_RAPOSA_COD)
-        {
-            matriz[raposas[i].pos.lin][raposas[i].pos.col] = VAZIO_COD;
-            eliminarRaposa(raposas, tamanho, &i);
-            n_tamanho--;
-            break;
-        }
-
         int n_vazias = 0;
         int vazias[4][2];
 
@@ -137,7 +143,7 @@ void moverRaposas(Raposa *raposas, int *tamanho, int lin, int col, int matriz[][
         while (!raposaContains(vazias, n_vazias, pos))
             pos = (pos + 1) % n_vazias;
 
-        if (raposas[i].ger == GER_PROC_RAPOSA_COD)
+        if (raposas[i].ger == ger_proc_raposas)
         {
             raposas[*tamanho] = criarRaposa(raposas[i].pos.lin, raposas[i].pos.col);
             *tamanho = *tamanho + 1;
@@ -176,5 +182,5 @@ void moverRaposas(Raposa *raposas, int *tamanho, int lin, int col, int matriz[][
         raposas[i].fome = raposas[i].fome + 1;
         raposas[i].ger = raposas[i].ger + 1;
     }
-    verificarRaposas(raposas, nova_pos, tamanho, lin, col, matriz);
+    verificarRaposas(raposas, nova_pos, tamanho, lin, col, matriz, ger_alim_raposas);
 }
