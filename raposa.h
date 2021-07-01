@@ -41,15 +41,6 @@ void eliminarRaposa(Raposa *raposas, int *tamanho, int *pos)
 void verificarRaposas(Raposa *raposas, int *nova_pos, int *tamanho, int lin, int col, int matriz[][col])
 {
 
-    for (int i = 0; i < *tamanho; i++)
-    {
-        if (raposas[i].fome == GER_ALIM_RAPOSA_COD)
-        {
-            matriz[raposas[i].pos.lin][raposas[i].pos.col] = VAZIO_COD;
-            eliminarRaposa(raposas, tamanho, &i);
-        }
-    }
-
     for (int i = 0; i < *tamanho - 1; i++)
     {
         for (int j = i + 1; j < *tamanho; j++)
@@ -100,6 +91,14 @@ void moverRaposas(Raposa *raposas, int *tamanho, int lin, int col, int matriz[][
     int nova_pos[n_tamanho];
     for (int i = 0; i < n_tamanho; i++)
     {
+        if (raposas[i].fome == GER_ALIM_RAPOSA_COD)
+        {
+            matriz[raposas[i].pos.lin][raposas[i].pos.col] = VAZIO_COD;
+            eliminarRaposa(raposas, tamanho, &i);
+            n_tamanho--;
+            break;
+        }
+
         int n_vazias = 0;
         int vazias[4][2];
 
